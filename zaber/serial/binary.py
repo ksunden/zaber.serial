@@ -221,6 +221,17 @@ class BinaryDevice(object):
         """
         return self.send(54).data
 
+    def get_position(self):
+        """Sends the "Return Current Position" command (60), and returns the 
+        result.
+
+        Returns:
+            An integer representing the current absolute postion in microsteps
+
+        ..  see: http://www.zaber.com/wiki/Manuals/Binary_Protoc
+            ol_Manual#Return_Current_Position_-_Cmd_60
+        """
+        return self.send(60).data
 
 
 class BinaryReply(object):
@@ -481,4 +492,17 @@ class BinarySerial(object):
             raise ValueError("Invalid baud rate: {:d}. Valid baud rates are "
                     "115200, 57600, 38400, 19200, and 9600.".format(b))
         self._ser.baudrate = b
+
+    def setMode(self, mode, device=0):
+        """Set the device mode.
+
+        Args:
+            mode: An integer representing the device mode.
+               Each bit represents a different setting on the device. 
+            device: An integer representing which device to send the command to,
+               Default is 0, i.e. all devices.
+
+        .. see https://www.zaber.com/wiki/Manuals/Binary_Protocol_Manual#Set_Device_Mode_-_Cmd_40
+        """
+        self.write(device, 40, mode)
 
