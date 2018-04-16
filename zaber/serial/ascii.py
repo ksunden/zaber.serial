@@ -209,6 +209,14 @@ class AsciiAxis(object):
         """
         return self.send("").device_status
 
+    def get_position(self):
+        """Sends the "Return Current Position" command (60), and returns the 
+        result.
+        Returns:
+            An integer representing the current absolute postion in microsteps
+        """
+        return self.send('get pos').data
+
     def poll_until_idle(self):
         """Polls the axis and blocks until the device reports that the
         axis is idle.
